@@ -7,7 +7,9 @@
 
     <ol id="doing-now">
       <% unless stuff_for(@doing_now).empty? %>
+      
       <%= render :partial => 'item', :collection => stuff_for(@doing_now) %>
+
       <% else %>
       <li class="empty-list">
         <%= l(:stuff_to_do_drag_issue_create_list) %>

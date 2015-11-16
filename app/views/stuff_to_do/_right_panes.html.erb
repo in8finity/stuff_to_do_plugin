@@ -3,7 +3,12 @@
 
     <ol id="available">
       <% unless @available.empty? %>
-      <%= render :partial => 'item', :collection => @available %>
+        <% issue_counter = 0 -%>
+        <% issue_list(@available) do |issue, level| -%>
+          <%= render :partial => 'item', :locals =>{:item => issue, :item_counter=> issue_counter, :depth_level=>level} %>
+          <% issue_counter +=1 -%>
+        <%end%>
+
       <% else %>
       <li class="empty-list">
         <%= l(:stuff_to_do_drag_issue_remove_list) %>

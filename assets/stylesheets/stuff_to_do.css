@@ -200,6 +200,25 @@ div.pane-summary table.progress { float: right; margin: 1px 6px;}
   z-index: 99;
 }
 
+.stuff-to-do-item.depth-1
+{
+  padding-left: 15px;
+}
+
+.stuff-to-do-item.depth-2
+{
+  padding-left: 30px;
+}
+
+.stuff-to-do-item.depth-3
+{
+  padding-left: 45px;
+}
+
+.stuff-to-do-item.depth-4
+{
+  padding-left: 60px;
+}
 
 li.stuff-to-do-item {
   position: relative;

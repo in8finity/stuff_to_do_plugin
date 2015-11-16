@@ -1,5 +1,6 @@
 <% if item.class == Issue %>
-<%= render :partial => 'issue', :locals => {:issue_counter => item_counter}, :object => item %>
+<% depth_level ||= 0 %>
+<%= render :partial => 'issue', :locals => {:issue_counter => item_counter, :depth_level => depth_level}, :object => item %>
 <% else %>
-<%= render :partial => 'project', :locals => {:project_counter => item_counter}, :object => item %>
+<%#= render :partial => 'project', :locals => {:project_counter => item_counter}, :object => item %>
 <% end %>

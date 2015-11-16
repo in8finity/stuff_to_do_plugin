@@ -94,7 +94,7 @@ class StuffToDo < ActiveRecord::Base
 
       potential_stuff_to_do = visible_issues.includes(:project, :status, :priority)
                                             .where(conditions_for_available(user, filter, project))
-                                            .order(created_on: :desc)
+                                            .order(parent_id: :asc, created_on: :desc)
     end
 
     stuff_to_do = StuffToDo.where(:user_id => user.id).collect(&:stuff)
@@ -263,7 +263,7 @@ class StuffToDo < ActiveRecord::Base
   end
 
   def self.use_setting
-    USE.index(Setting.plugin_stuff_to_do_plugin['use_as_stuff_to_do'])
+    USE.key(Setting.plugin_stuff_to_do_plugin['use_as_stuff_to_do'])
   end
 
   def self.conditions_for_available(user, filter_by, project)
@@ -283,7 +283,11 @@ class StuffToDo < ActiveRecord::Base
       table_name = filter_by.class.table_name
       conditions["#{table_name}.id"] = filter_by.id
     end
-    conditions["#{Issue.table_name}.project_id"] = project.id unless project.nil?
+    if(project.kind_of?(Array))
+      conditions["#{Issue.table_name}.project_id"] = project.map{|p| p.id}
+    else
+      conditions["#{Issue.table_name}.project_id"] = project.id unless project.nil?
+    end
     conditions
   end
 end

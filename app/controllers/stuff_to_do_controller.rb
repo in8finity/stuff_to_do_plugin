@@ -6,11 +6,17 @@ class StuffToDoController < ApplicationController
   before_filter :get_user, :get_project
   helper :stuff_to_do
   helper :custom_fields
+  helper :issues
   
   def index
     @doing_now = StuffToDo.doing_now(@user)
     @recommended = StuffToDo.recommended(@user)
-    @available = StuffToDo.available(@user, @project, default_filters )
+    @projects = nil
+    if @project then 
+      @projects = [] 
+      @projects = [@project].concat(@project.descendants)
+    end
+    @available = StuffToDo.available(@user, @projects, default_filters )
 
     @users = StuffToDoReportee.reportees_for(User.current)
     @users << User.current unless @users.include?(User.current)
@@ -56,7 +62,12 @@ class StuffToDoController < ApplicationController
   end
   
   def available_issues
-    @available = StuffToDo.available(@user, @project, get_filters)
+    @projects = nil
+    if @project then 
+      @projects = [] 
+      @projects = [@project].concat(@project.descendants)
+    end
+    @available = StuffToDo.available(@user, @projects, get_filters)
 
     respond_to do |format|
       format.html { redirect_to :action => 'index'}
